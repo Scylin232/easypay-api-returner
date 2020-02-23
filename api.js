@@ -25,7 +25,7 @@ app.get('/wallets', async (req, res) => {
     });
     return await res.status(200).send(easypay.data.wallets);
   } catch(err) {
-    console.log(err.message, easypay.data)
+    console.log(err.message)
     return await res.status(500).send('Request to EasyPay API Failed.');
   }
 });
@@ -48,7 +48,7 @@ app.get('/getWalletById', async (req, res) => {
     });
     return await res.status(200).send(easypay.data.wallets);
   } catch(err) {
-    console.log(err.message, easypay.data)
+    console.log(err.message)
     return await res.status(500).send('Request to EasyPay API Failed.');
   }
 });
@@ -60,7 +60,7 @@ app.post('/setCredentials', async (req, res) => {
     await mongo.credentialsModel.findByIdAndUpdate('5e4e36c5d5b4492364eeda8d', { login, password });
     return await res.status(200).send('Credentials updates succesfuly!');
   } catch(err) {
-    console.log(err.message, easypay.data)
+    console.log(err.message)
     return await res.status(500).send('Request to EasyPay API Failed.');
   }
 });
