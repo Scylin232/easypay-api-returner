@@ -30,6 +30,24 @@ app.get('/wallets', async (req, res) => {
   }
 });
 
+app.get('/walletGlobalMoney', async (req, res) => {
+  try {
+    const [bearerToken, walletId] = fs.readFileSync('../globalmoneyData.dat', 'utf-8').split(/\r?\n/);
+    const globalmoney = await axios({
+      url: 'https://www.globalmoney.ua/wallet/info/',
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'uuid': walletId
+      }
+    });
+    return await res.status(200).send(globalmoney.data.content);
+  } catch(err) {
+    console.log(err.message);
+    return await res.status(500).send('Request to EasyPay API Failed.');
+  }
+});
+
 app.get('/getWalletById', async (req, res) => {
   try {
     const [pageId, appId, bearerToken] = fs.readFileSync('../easypayData.dat', 'utf-8').split(/\r?\n/);
@@ -58,6 +76,18 @@ app.post('/setCredentials', async (req, res) => {
     const { login, password } = req.query;
     console.log(login, password);
     await fs.writeFileSync('../easypayCredentials.dat', `${login}\n${password}`);
+    return await res.status(200).send('Credentials updates succesfuly!');
+  } catch(err) {
+    console.log(err.message);
+    return await res.status(500).send('Request to EasyPay API Failed.');
+  }
+});
+
+app.post('/setCredentialsGlobalMoney', async (req, res) => {
+  try {
+    const { login, password } = req.query;
+    console.log(login, password);
+    await fs.writeFileSync('../globalmoneyCredentials.dat', `${login}\n${password}`);
     return await res.status(200).send('Credentials updates succesfuly!');
   } catch(err) {
     console.log(err.message);
