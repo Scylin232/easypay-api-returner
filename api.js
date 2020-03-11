@@ -75,7 +75,7 @@ app.post('/setCredentials', async (req, res) => {
   try {
     const { login, password } = req.query;
     console.log(login, password);
-    await fs.writeFileSync('../easypayCredentials.dat', `${login}\n${password}`);
+    await fs.writeFileSync('../easypayCredentials.dat', `38${login}\n${password}`);
     return await res.status(200).send('Credentials updates succesfuly!');
   } catch(err) {
     console.log(err.message);
