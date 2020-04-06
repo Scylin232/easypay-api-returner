@@ -32,16 +32,16 @@ app.get('/wallets', async (req, res) => {
 
 app.get('/walletGlobalMoney', async (req, res) => {
   try {
-    const [bearerToken, walletId] = fs.readFileSync('../globalmoneyData.dat', 'utf-8').split(/\r?\n/);
+    const [token, walletId] = fs.readFileSync('../globalmoneyData.dat', 'utf-8').split(/\r?\n/);
     const globalmoney = await axios({
-      url: 'https://www.globalmoney.ua/wallet/info/',
+      url: 'https://art.global24.com.ua/status',
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${bearerToken}`,
-        'uuid': walletId
-      }
+        'authorization': `${token}`,
+        'user-agent': `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36`,
+      },
     });
-    return await res.status(200).send(globalmoney.data.content);
+    return await res.status(200).send(globalmoney.data);
   } catch(err) {
     console.log(err.message);
     return await res.status(500).send('Request to EasyPay API Failed.');
